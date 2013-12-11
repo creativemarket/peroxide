@@ -12,7 +12,7 @@ $ peroxide --port=8000 --config=./sources.json
 
 ## Configuration
 
-Peroxide uses a JSON configuration file (that is loaded via the `--config` flag). Each entry makes up a zone with an associated [responder](#responders) and list of sources (which can be served from the [filesystem](#filesystem) or a [http](#http) source).
+Peroxide uses a JSON configuration file (that is loaded via the `--config` flag). Each entry makes up a zone with an associated [responder](#responders) and list of sources (which can be served from the [filesystem](#sources) or a [http](#sources) source).
 
 ```json
 {
@@ -47,11 +47,11 @@ http://localhost:[port]/[zone]?path=[path]
 ```
 
 ### Sources
-- **"http"** – Attempts to fetch the asset over HTTP (options: *path*).
-- **"filesystem"** – Reads from the filesystem (options: *path*).
+- [**"http"**](lib/sources/http.js) – Attempts to fetch the asset over HTTP (options: *path*).
+- [**"filesystem"**](lib/sources/filesystem.js) – Reads from the filesystem (options: *path*).
 
 ### Responders
-- **"pipe"** – Pipes the readable stream straight to the response.
+- [**"pipe"**](lib/responders/pipe.js) – Pipes the readable stream straight to the response.
 
 ## Debugging
 
