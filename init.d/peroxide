@@ -37,28 +37,28 @@ case "$1" in
 
 	stop)
 		if [ ! -f $PID_FILE ]; then
-        	echo "$PID_FILE does not exist, process is not running"
-        else
-        	echo "Stopping $DESC..."
-        	PID=`cat $PID_FILE`
-        	rm $PID_FILE
-        	kill $PID
-        	echo "stopped."
-        fi
-        ;;
+			echo "$PID_FILE does not exist, process is not running"
+		else
+			echo "Stopping $DESC..."
+			PID=`cat $PID_FILE`
+			rm $PID_FILE
+			kill $PID
+			echo "stopped."
+		fi
+		;;
 
 	restart)
 		echo "Restarting $DESC..."
 		if [ -f $PID_FILE ]; then
 			PID=`cat $PID_FILE`
-        	rm $PID_FILE
-        	kill $PID
+			rm $PID_FILE
+			kill $PID
 		fi
 
 		sleep 1
 		$DAEMON $DAEMON_OPTS
 		echo "restarted."
-	    ;;
+		;;
 
 	status)
 		status_of_proc -p $PID_FILE $DAEMON "$NAME" && exit 0 || exit $?
