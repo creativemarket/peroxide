@@ -51,7 +51,7 @@ for (zone_name in config) {
 // start up the server
 if (options.daemon) {
 	child_process.spawn(__filename, ['--config', options.config, '--port', options.port, '--pidfile', options.pidfile], {detached: true});
-	process.exit(0);
+	setTimeout(function() { process.exit(0); }, 2000);
 } else {
 	if (options.pidfile && typeof options.pidfile === 'string') {
 		npid.create(options.pidfile);
