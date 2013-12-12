@@ -1,14 +1,19 @@
 #!/usr/bin/env node
-var fs = require('fs');
-var optimist = require('optimist');
-var peroxide = require('../lib/server.js');
-var options, config, server, zone_name, create_zone;
+var fs            = require('fs');
+var npid          = require('npid');
+var child_process = require('child_process');
+var optimist      = require('optimist');
+var peroxide      = require('../lib/server.js');
+
+var options, config, server, zone_name, create_zone, daemon;
 
 options = optimist
 	.usage('Usage: $0 [options]')
 	.describe('config', 'Configuration file path (*.json)')
 	.describe('port', 'Server port')
 	.describe('silent', 'Disables all console output')
+	.describe('daemon', 'Run in daemon mode')
+	.describe('pidfile', 'PID file')
 	.default('port', 8000)
 	.demand(['config','port'])
 	.check(function(options) {
@@ -44,5 +49,18 @@ for (zone_name in config) {
 }
 
 // start up the server
-server.listen(options.port);
-console.log('Peroxide listening on port ' + options.port + '...');
+if (options.daemon) {
+	child_process.spawn(__filename, ['--config', options.config, '--port', options.port, '--pidfile', options.pidfile], {detached: true});
+	process.exit(0);
+} else {
+	if (options.pidfile && typeof options.pidfile === 'string') {
+		npid.create(options.pidfile);
+	}
+	try {
+		server.listen(options.port);
+		console.log('Peroxide listening on port ' + options.port + '...');
+	} catch (e) {
+		console.err('Unable to bind to port ' + options.port);
+		process.exit(1);
+	}
+}

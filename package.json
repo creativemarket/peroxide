@@ -1,10 +1,16 @@
 {
   "name": "peroxide",
-  "keywords": ["proxy","server","asset"],
+  "keywords": [
+    "proxy",
+    "server",
+    "asset"
+  ],
   "description": "A simple, configurable proxy server that will hit a chain of sources before failing.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "preferGlobal": true,
-  "bin": {"peroxide": "./bin/server.js"},
+  "bin": {
+    "peroxide": "./bin/server.js"
+  },
   "homepage": "https://github.com/creativemarket/peroxide",
   "author": "Brian Reavis <brian@creativemarket.com>",
   "bugs": "https://github.com/creativemarket/peroxide/issues",
@@ -16,6 +22,7 @@
   "dependencies": {
     "request": "~2.29.0",
     "lodash": "~2.4.1",
-    "optimist": "~0.6.0"
+    "optimist": "~0.6.0",
+    "npid": "~0.3.2"
   }
 }

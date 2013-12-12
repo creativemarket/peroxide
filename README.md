@@ -12,7 +12,7 @@ $ peroxide --port=8000 --config=./sources.json
 
 ## Configuration
 
-Peroxide uses a JSON configuration file (that is loaded via the `--config` flag). Each entry makes up a zone with an associated [responder](#responders) and list of sources (which can be served from the [filesystem](#sources) or a [http](#sources) source).
+Peroxide uses a JSON configuration file (that is loaded via the `--config` flag). Each entry makes up a zone with an associated [responder](#responders) and list of sources ([filesystem](#sources) or [http](#sources)).
 
 ```json
 {
@@ -27,7 +27,7 @@ Peroxide uses a JSON configuration file (that is loaded via the `--config` flag)
       "responder": "pipe",
       "sources": [
          {"type": "filesystem", "options": {"path": "/var/www/site.com/public/ugc"}},
-         {"type": "http", "options": {"path": "http://s3.amazonaws.com/ugc.site.com"}},
+         {"type": "http", "options": {"path": "http://s3.amazonaws.com/dev-ugc.site.com"}},
          {"type": "http", "options": {"path": "http://s3.amazonaws.com/ugc.site.com"}}
       ]
    }
@@ -62,7 +62,6 @@ X-Content-Source: https://s3.amazonaws.com/static.site.com/images/icon.png
 ```
 
 If no source is able to serve the file, a `404 Not Found` status will be provided. The body will be a `text/plain` description containing all the paths that were attempted.
-
 
 ## License
 

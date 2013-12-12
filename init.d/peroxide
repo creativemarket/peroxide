@@ -1,0 +1,74 @@
+#!/bin/sh
+#
+# description: Peroxide Service Manager
+# processname: peroxide
+# pidfile: /var/run/peroxide.pid
+#
+
+if [ "$NETWORKING" = "no" ]; then
+	exit 0
+fi
+
+CONFIG=/path/to/peroxide.json
+PORT=8000
+
+PREFIX=/usr/local
+NAME=peroxide
+DESC=Peroxide
+PID_FILE=/var/run/peroxide.pid
+DAEMON=$PREFIX/bin/peroxide
+DAEMON_OPTS=" --port=$PORT --config=$CONFIG --daemon --pidfile=$PID_FILE"
+
+test -x $DAEMON || exit 0
+set -e
+. /lib/lsb/init-functions
+
+case "$1" in
+
+	start)
+		if [ -f $PID_FILE ]; then
+			echo "$PID_FILE exists, process is already running"
+		else
+			echo "Starting $DESC: "
+			$DAEMON $DAEMON_OPTS
+			echo "started."
+		fi
+		;;
+
+	stop)
+		if [ ! -f $PID_FILE ]; then
+        	echo "$PID_FILE does not exist, process is not running"
+        else
+        	echo "Stopping $DESC..."
+        	PID=`cat $PID_FILE`
+        	rm $PID_FILE
+        	kill $PID
+        	echo "stopped."
+        fi
+        ;;
+
+	restart)
+		echo "Restarting $DESC..."
+		if [ -f $PID_FILE ]; then
+			PID=`cat $PID_FILE`
+        	rm $PID_FILE
+        	kill $PID
+		fi
+
+		sleep 1
+		$DAEMON $DAEMON_OPTS
+		echo "restarted."
+	    ;;
+
+	status)
+		status_of_proc -p $PID_FILE $DAEMON "$NAME" && exit 0 || exit $?
+		;;
+
+	*)
+		echo $"Usage: $0 {start|stop|status|restart}"
+		exit 1
+		;;
+
+esac
+
+exit 0
