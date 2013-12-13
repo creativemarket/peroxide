@@ -1,4 +1,8 @@
 # peroxide
+[![NPM version](https://badge.fury.io/js/peroxide.png)](http://badge.fury.io/js/sifter)
+[![Build Status](https://travis-ci.org/creativemarket/peroxide.png?branch=master)](https://travis-ci.org/creativemarket/peroxide)
+[![Coverage Status](https://coveralls.io/repos/creativemarket/peroxide/badge.png)](https://coveralls.io/r/creativemarket/peroxide)
+
 #### A simple, configurable proxy server that will hit a chain of sources before failing.
 
 A common problem when working in a dev environment with production data is that some assets will need to point to local files and others will need to point to production servers (depending on the environment they were created in). Managing this within the application can be infeasible – that's where peroxide comes in.
