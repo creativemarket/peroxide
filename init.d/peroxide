@@ -1,9 +1,13 @@
 #!/bin/sh
-#
-# description: Peroxide Service Manager
-# processname: peroxide
-# pidfile: /var/run/peroxide.pid
-#
+### BEGIN INIT INFO
+# Provides:          peroxide
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Peroxide Service Manager
+# Description:       Start/stop peroxide service
+### END INIT INFO
 
 if [ "$NETWORKING" = "no" ]; then
 	exit 0
@@ -19,54 +23,86 @@ PID_FILE=/var/run/peroxide.pid
 DAEMON=$PREFIX/bin/peroxide
 DAEMON_OPTS=" --port=$PORT --config=$CONFIG --daemon --pidfile=$PID_FILE"
 
-test -x $DAEMON || exit 0
+test -x $DAEMON || exit 1
 set -e
 . /lib/lsb/init-functions
+
+start() {
+	if [ -f $PID_FILE ]; then
+		echo "$PID_FILE exists, process is already running"
+	else
+		echo "Starting $DESC: "
+		$DAEMON $DAEMON_OPTS
+		if [ $? -ne 0 ]; then
+			echo "failed."
+			exit 1
+		fi
+		echo "started."
+	fi
+}
+
+stop() {
+	if [ ! -f $PID_FILE ]; then
+		echo "$PID_FILE does not exist, process is not running"
+	else
+		echo "Stopping $DESC..."
+		PID=`cat $PID_FILE`
+		rm $PID_FILE
+		kill $PID
+		echo "stopped."
+	fi
+}
+
+restart() {
+	echo "Restarting $DESC..."
+	if [ -f $PID_FILE ]; then
+		PID=`cat $PID_FILE`
+		rm $PID_FILE
+		kill $PID
+	fi
+
+	sleep 1
+	$DAEMON $DAEMON_OPTS
+	if [ $? -ne 0 ]; then
+		echo "failed."
+		exit 1
+	fi
+	echo "restarted."
+}
+
+status() {
+	status_of_proc -p $PID_FILE $DAEMON "$NAME" && exit 0 || exit $?
+}
+
+info() {
+	echo $"Usage: $0 {start|stop|status|restart|reload}"
+	exit 1
+}
 
 case "$1" in
 
 	start)
-		if [ -f $PID_FILE ]; then
-			echo "$PID_FILE exists, process is already running"
-		else
-			echo "Starting $DESC: "
-			$DAEMON $DAEMON_OPTS
-			echo "started."
-		fi
+		start
 		;;
 
 	stop)
-		if [ ! -f $PID_FILE ]; then
-			echo "$PID_FILE does not exist, process is not running"
-		else
-			echo "Stopping $DESC..."
-			PID=`cat $PID_FILE`
-			rm $PID_FILE
-			kill $PID
-			echo "stopped."
-		fi
+		stop
 		;;
 
 	restart)
-		echo "Restarting $DESC..."
-		if [ -f $PID_FILE ]; then
-			PID=`cat $PID_FILE`
-			rm $PID_FILE
-			kill $PID
-		fi
+		restart
+		;;
 
-		sleep 1
-		$DAEMON $DAEMON_OPTS
-		echo "restarted."
+	reload)
+		restart
 		;;
 
 	status)
-		status_of_proc -p $PID_FILE $DAEMON "$NAME" && exit 0 || exit $?
+		status
 		;;
 
 	*)
-		echo $"Usage: $0 {start|stop|status|restart}"
-		exit 1
+		info
 		;;
 
 esac
