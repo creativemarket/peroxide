@@ -1,5 +1,5 @@
 # peroxide
-[![NPM version](https://badge.fury.io/js/peroxide.png)](http://badge.fury.io/js/sifter)
+[![NPM version](https://badge.fury.io/js/peroxide.png)](https://npmjs.org/package/peroxide)
 [![Build Status](https://travis-ci.org/creativemarket/peroxide.png?branch=master)](https://travis-ci.org/creativemarket/peroxide)
 [![Coverage Status](https://coveralls.io/repos/creativemarket/peroxide/badge.png)](https://coveralls.io/r/creativemarket/peroxide)
 
