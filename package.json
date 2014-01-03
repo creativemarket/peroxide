@@ -31,5 +31,8 @@
     "mocha-lcov-reporter": "0.0.1",
     "coveralls": "~2.6.0",
     "istanbul": "~0.1.46"
+  },
+  "engines": {
+    "node": ">= 0.10.0"
   }
 }

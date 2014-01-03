@@ -48,13 +48,14 @@ describe('Source', function() {
 			});
 
 			describe('if file found', function() {
-				var res_err, res_stream, res_path;
+				var res_err, res_stream, res_path, res_meta;
 
 				before(function(done) {
-					source.stream('favicon.ico', function(err, stream, path) {
+					source.stream('favicon.ico', function(err, stream, path, meta) {
 						res_err    = err;
 						res_stream = stream;
 						res_path   = path;
+						res_meta   = meta;
 						done();
 					});
 				});
@@ -67,6 +68,10 @@ describe('Source', function() {
 				});
 				it('should return correct search path', function() {
 					assert.equal(res_path, 'https://creativemarket.com/favicon.ico');
+				});
+				it('should return headers from resource', function() {
+					assert.equal(typeof res_meta.headers, 'object');
+					assert.equal(res_meta.headers === null, false);
 				});
 			});
 

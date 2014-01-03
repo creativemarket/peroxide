@@ -21,14 +21,14 @@ Peroxide uses a JSON configuration file (that is loaded via the `--config` flag)
 ```json
 {
    "/assets": {
-      "responder": "pipe",
+      "responder": "buffer",
       "sources": [
          {"type": "filesystem", "options": {"path": "/var/www/site.com/public/"}},
          {"type": "http", "options": {"path": "http://s3.amazonaws.com/static.site.com"}}
       ]
    },
    "/ugc": {
-      "responder": "pipe",
+      "responder": "buffer",
       "sources": [
          {"type": "filesystem", "options": {"path": "/var/www/site.com/public/ugc"}},
          {"type": "http", "options": {"path": "http://s3.amazonaws.com/dev-ugc.site.com"}},
@@ -56,6 +56,7 @@ http://localhost:[port]/[zone]?path=[path]
 
 ### Responders
 - [**"pipe"**](lib/responders/pipe.js) – Pipes the readable stream straight to the response.
+- [**"buffer"**](lib/responders/buffer.js) – Buffers the resource before sending it to the browser.
 
 ## Debugging
 
