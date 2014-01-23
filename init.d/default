@@ -1,0 +1,12 @@
+# Defaults for peroxide init script
+# sourced by /etc/init.d/peroxide
+# installed at /etc/default/peroxide
+
+CONFIG=/path/to/peroxide.json
+
+#PORT=8000
+#PID_FILE=/var/run/peroxide.pid
+
+USE_SSL="yes"
+SSL_CERT=/path/to/ssl.cert
+SSL_KEY=/path/to/private.key

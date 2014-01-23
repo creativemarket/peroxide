@@ -5,7 +5,7 @@ var child_process = require('child_process');
 var optimist      = require('optimist');
 var peroxide      = require('../lib/server.js');
 
-var options, config, server, zone_name, create_zone, daemon;
+var options, config, server, zone_name, create_zone, daemon, server_options;
 
 options = optimist
 	.usage('Usage: $0 [options]')
@@ -14,6 +14,9 @@ options = optimist
 	.describe('silent', 'Disables all console output')
 	.describe('daemon', 'Run in daemon mode')
 	.describe('pidfile', 'PID file')
+	.describe('ssl', 'Use HTTPS protocol')
+	.describe('cert', 'SSL certificate required when ssl enabled')
+	.describe('key', 'Private key required when ssl enabled')
 	.default('port', 8000)
 	.demand(['config','port'])
 	.check(function(options) {
@@ -41,7 +44,15 @@ create_zone = function(name, settings, server) {
 	}
 };
 
-server = peroxide.create({log: options.silent !== true});
+server_options = {
+	log: options.silent !== true,
+}
+if (options.ssl) {
+	server_options.ssl 	= true;
+	server_options.cert = options.cert;
+	server_options.key	= options.key;
+}
+server = peroxide.create(server_options);
 for (zone_name in config) {
 	if (config.hasOwnProperty(zone_name)) {
 		create_zone(zone_name, config[zone_name], server);
@@ -50,7 +61,10 @@ for (zone_name in config) {
 
 // start up the server
 if (options.daemon) {
-	child_process.spawn(__filename, ['--config', options.config, '--port', options.port, '--pidfile', options.pidfile], {detached: true, stdio: 'ignore'});
+	var daemon_options = process.argv;
+	daemon_options.splice(0, 2);
+	daemon_options.splice(daemon_options.indexOf('--daemon'), 1);
+	child_process.spawn(__filename, daemon_options, {detached: true, stdio: 'ignore'});
 	setTimeout(function() { process.exit(0); }, 1000);
 } else {
 	if (options.pidfile && typeof options.pidfile === 'string') {

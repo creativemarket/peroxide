@@ -15,17 +15,27 @@ fi
 
 CONFIG=/path/to/peroxide.json
 PORT=8000
-
+USE_SSL="no"
 PREFIX=/usr/local
 NAME=peroxide
 DESC=Peroxide
 PID_FILE=/var/run/peroxide.pid
 DAEMON=$PREFIX/bin/peroxide
-DAEMON_OPTS=" --port=$PORT --config=$CONFIG --daemon --pidfile=$PID_FILE"
 
 test -x $DAEMON || exit 1
 set -e
 . /lib/lsb/init-functions
+
+# Include defaults if available
+if [ -f /etc/default/peroxide ] ; then
+	. /etc/default/peroxide
+fi
+
+DAEMON_OPTS=" --port=$PORT --config=$CONFIG --daemon --pidfile=$PID_FILE"
+
+if [ "x$USE_SSL" == "xyes" ]; then
+	DAEMON_OPTS="$DAEMON_OPTS --ssl --key $SSL_KEY --cert $SSL_CERT"
+fi
 
 start() {
 	if [ -f $PID_FILE ]; then
