@@ -6,7 +6,7 @@
     "asset"
   ],
   "description": "A simple, configurable proxy server that will hit a chain of sources before failing.",
-  "version": "0.1.1",
+  "version": "0.1.0",
   "preferGlobal": true,
   "bin": {
     "peroxide": "./bin/server.js"
