@@ -51,7 +51,7 @@ http://localhost:[port]/[zone]?path=[path]
 ```
 
 ### Sources
-- [**"http"**](lib/sources/http.js) – Attempts to fetch the asset over HTTP (options: *path*).
+- [**"http"**](lib/sources/http.js) – Attempts to fetch the asset over HTTP (options: *path*, *timeout*).
 - [**"filesystem"**](lib/sources/filesystem.js) – Reads from the filesystem (options: *path*).
 
 ### Responders
