@@ -59,21 +59,26 @@ http://localhost:[port]/[zone]?path=[path]
 - [**"buffer"**](lib/responders/buffer.js) – Buffers the resource before sending it to the browser.
 
 
-## SSL
+## Misc
+
+### SSL
 
 Serving content over HTTPS is supported by passing additional flags on the command line.
 
 ```sh
-$ peroxide --port=8000 --config=./sources.json --ssl --key /etc/apache2/ssl/server.key --cert /etc/apache2/ssl/server.crt
+$ peroxide \
+  --port=8000 --config=./sources.json --ssl \
+  --key /etc/apache2/ssl/server.key \
+  --cert /etc/apache2/ssl/server.crt
 ```
 
-## Init Script
+### Init Script
 
-Example init.d scripts are provided in the init.d directory.  Copy ./init.d/peroxide to /etc/init.d/peroxide and ./init.d/default to /etc/default/peroxide.
-Configure default values (i.e. port, config file location, ssl options) in /etc/default/peroxide.
+Example init.d scripts are provided in the ["init.d"](init.d/) directory. Copy ["./init.d/peroxide"](init.d/peroxide) to `/etc/init.d/peroxide` and ["./init.d/default"](init.d/default) to `/etc/default/peroxide`.
+Configure the default values (i.e. port, config file location, ssl options) in `/etc/default/peroxide`.
 
 
-## Debugging
+### Debugging
 
 Peroxide adds a `X-Content-Source` response header that makes it possible to tell where the file came from:
 
