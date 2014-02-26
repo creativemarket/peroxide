@@ -3,6 +3,7 @@ var Source = require('../lib/sources/http.js');
 
 describe('Source', function() {
 	describe('"http"', function() {
+		this.timeout(30000);
 
 		describe('constructor', function() {
 			it('should execute without error', function() {
@@ -24,7 +25,7 @@ describe('Source', function() {
 		});
 
 		describe('#stream()', function() {
-			var source = new Source({path: 'https://creativemarket.com/'});
+			var source = new Source({path: 'https://creativemarket.com/', timeout: 20000});
 			source.initialize(source.options);
 
 			describe('if file not found', function() {
